@@ -1,66 +1,134 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
+
+class AddEmployeeRequestDetail {
+  @Expose()
+  name: string;
+  
+  @Expose()
+  joining: Date;
+  
+  @Expose()
+  end: Date;
+  
+  @Expose()
+  nik: string;
+  
+  @Expose()
+  npwp: string;
+  
+  @Expose()
+  placeOfBirth: string;
+  
+  @Expose()
+  dateOfBirth: Date;
+  
+  @Expose()
+  gender: "Pria" | "Wanita";
+  
+  @Expose()
+  bloodType: "A" | "B" | "AB" | "O";
+  
+  @Expose()
+  religion: "Islam" | "Kristen" | "Hindu" | "Buddha" | "Kong Hu Chu" | "Lainnya";
+  
+  @Expose()
+  latestEducation: "SD" | "SMP" | "SMA/SMK" | "Sarjana" | "Magister" | "Doktor";
+  
+  @Expose()
+  yearOfGraduation: number;
+}
+
+class AddEmployeeRequestEmergencyContact {
+  @Expose()
+  name: string;
+  
+  @Expose()
+  phoneNumber: string;
+}
+
+class AddEmployeeRequestContactAndAddress {
+  @Expose()
+  phoneNumber: string;
+  
+  @Expose()
+  email: string;
+  
+  @Expose()
+  @Type()
+  emergencyContact: AddEmployeeRequestEmergencyContact;
+  
+  @Expose()
+  address: string;
+  
+  @Expose()
+  kelurahan: string;
+  
+  @Expose()
+  kecamatan: string;
+  
+  @Expose()
+  city: string;
+  
+  @Expose()
+  province: string;
+  
+  @Expose()
+  zipCode: string;
+}
+
+class AddEmployeeRequestFamilyContact {
+  @Expose()
+  name: string;
+  
+  @Expose()
+  phoneNumber: string;
+  
+  @Expose()
+  address: string;
+}
+
+class AddEmployeeRequestFamily {
+  @Expose()
+  maritalStatus: "Single" | "Married" | "Divorce";
+  
+  @Expose()
+  @Type(() => AddEmployeeRequestFamilyContact)
+  spouse: AddEmployeeRequestFamilyContact;
+  
+  @Expose()
+  @Type(() => AddEmployeeRequestFamilyContact)
+  mother: AddEmployeeRequestFamilyContact;
+  
+  @Expose()
+  @Type(() => AddEmployeeRequestFamilyContact)
+  father: AddEmployeeRequestFamilyContact;
+  
+  @Expose()
+  @Type(() => AddEmployeeRequestFamilyContact)
+  siblings: AddEmployeeRequestFamilyContact[];
+  
+  tanggungan: unknown;
+}
+
+class AddEmployeeRequestLeave {
+  @Expose()
+  totalLeaves: number;
+}
 
 export class AddEmployeeRequest {
   @Expose()
-  detail: {
-    name: string
-    joining: Date
-    end: Date
-    nik: string
-    npwp: string
-    placeOfBirth: string
-    dateOfBirth: Date
-    gender: "Pria" | "Wanita"
-    bloodType: "A" | "B" | "AB" | "O"
-    religion: "Islam" | "Kristen" | "Hindu" | "Buddha" | "Kong Hu Chu" | "Lainnya"
-    latestEducation: "SD" | "SMP" | "SMA/SMK" | "Sarjana" | "Magister" | "Doktor"
-    yearOfGraduation: number
-  };
+  @Type(() => AddEmployeeRequestDetail)
+  detail: AddEmployeeRequestDetail;
   
   @Expose()
-  contactAndAddress: {
-    phoneNumber: string
-    email: string
-    emergencyContact: {
-      name: string
-      phoneNumber: string
-    }
-    address: string
-    kelurahan: string
-    kecamatan: string
-    city: string
-    province: string
-    zipCode: string
-  };
+  @Type(() => AddEmployeeRequestContactAndAddress)
+  contactAndAddress: AddEmployeeRequestContactAndAddress;
   
   @Expose()
-  family: {
-    maritalStatus: "Single" | "Married" | "Divorce"
-    spouse: {
-      name: string
-      phoneNumber: string
-      address: string
-    }
-    mother: {
-      name: string
-      phoneNumber: string
-      address: string
-    }
-    father: {
-      name: string
-      phoneNumber: string
-      address: string
-    }
-    siblings: {
-      name: string
-      phoneNumber: string
-      address: string
-    }[]
-    tanggungan: unknown
-  };
+  @Type(() => AddEmployeeRequestFamily)
+  family: AddEmployeeRequestFamily;
   
   @Expose()
-  leave: {
-    totalLeaves: number
-  };
+  @Type(() => AddEmployeeRequestLeave)
+  leave: AddEmployeeRequestLeave;
 }
