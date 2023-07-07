@@ -7,7 +7,8 @@
     "dev:watch": "nodemon src/main.ts",
     "dev": "ts-node src/main.ts",
     "build": "tsc",
-    "run": "node -r tsconfig-paths/register dist/main.js"
+    "run": "node -r tsconfig-paths/register dist/main.js",
+    "migrate": "ts-node src/migration.ts"
   },
   "author": "Malma",
   "license": "MIT",

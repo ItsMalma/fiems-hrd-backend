@@ -18,11 +18,11 @@ async function main() {
   await mongoClient.connect();
   console.log(`Connected to ${mongoUrl}`);
   
-  // get mongo database
-  const mongoDatabase = mongoClient.db(mongoDatabaseName);
-  
   // close mongo connection when application exit
   process.on("exit", async () => await mongoClient.close());
+  
+  // get mongo database
+  const mongoDatabase = mongoClient.db(mongoDatabaseName);
   
   // create express app
   const app = express();
