@@ -1,7 +1,7 @@
 export class Payload<TData, TError> {
-  data: TData
-  error: TError
-  message: string
+  data: TData;
+  error: TError;
+  message: string;
   
   constructor(data: TData, error: TError, message: string) {
     this.data = data;

@@ -1,5 +1,5 @@
 export class Employee {
-  _id: number
+  _id: number;
   detail: {
     name: string
     joining: Date
@@ -13,7 +13,7 @@ export class Employee {
     religion: "Islam" | "Kristen" | "Hindu" | "Buddha" | "Kong Hu Chu" | "Lainnya"
     latestEducation: "SD" | "SMP" | "SMA/SMK" | "Sarjana" | "Magister" | "Doktor"
     yearOfGraduation: number
-  }
+  };
   contactAndAddress: {
     phoneNumber: string
     email: string
@@ -27,7 +27,7 @@ export class Employee {
     city: string
     province: string
     zipCode: string
-  }
+  };
   family: {
     maritalStatus: "Single" | "Married" | "Divorce"
     spouse: {
@@ -51,8 +51,8 @@ export class Employee {
       address: string
     }[]
     tanggungan: unknown
-  }
+  };
   leave: {
     totalLeaves: number
-  }
+  };
 }
