@@ -3,9 +3,9 @@ export class Employee {
   detail: {
     name: string
     joining: Date
-    end: Date | null
+    end: Date
     nik: string
-    npwp: string | null
+    npwp: string
     placeOfBirth: string
     dateOfBirth: Date
     gender: "Pria" | "Wanita"
@@ -20,7 +20,7 @@ export class Employee {
     emergencyContact: {
       name: string
       phoneNumber: string
-    } | null
+    }
     address: string
     kelurahan: string
     kecamatan: string
@@ -34,20 +34,20 @@ export class Employee {
       name: string
       phoneNumber: string
       address: string
-    } | null
+    }
     mother: {
       name: string
-      phoneNumber: string | null
+      phoneNumber: string
       address: string
     }
     father: {
       name: string
-      phoneNumber: string | null
+      phoneNumber: string
       address: string
     }
     siblings: {
       name: string
-      phoneNumber: string | null
+      phoneNumber: string
       address: string
     }[]
     tanggungan: unknown
