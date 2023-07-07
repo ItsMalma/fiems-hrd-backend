@@ -55,4 +55,5 @@ export class Employee {
   leave: {
     totalLeaves: number
   };
+  deletedAt: Date;
 }
