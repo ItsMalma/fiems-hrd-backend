@@ -5,3 +5,5 @@ dist
 config/local-development.json
 
 .idea
+
+seed.ts
