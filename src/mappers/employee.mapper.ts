@@ -5,8 +5,8 @@ import {
   FilterEmployeesRequest
 } from "@/dtos/employee.dto";
 import { Employee } from "@/entities/employee.entity";
-import { Sort } from "mongodb";
 import moment from "moment";
+import { EmployeeSort } from "@/repositories/employee.repository";
 
 export class EmployeeMapper {
   saveRequestToEntity(dto: SaveEmployeeRequest): Employee {
@@ -24,17 +24,11 @@ export class EmployeeMapper {
     };
   }
   
-  filterRequestToSort(dto: FilterEmployeesRequest): Sort {
-    const sort: Sort = {};
+  filterRequestToSort(dto: FilterEmployeesRequest): EmployeeSort {
+    const sort: EmployeeSort = {};
     
-    switch (dto.sort) {
-    case "az":
-      sort["detail.name"] = 1;
-      break;
-    case "za":
-      sort["detail.name"] = -1;
-      break;
-    }
+    if (dto.sort)
+      sort.name = dto.sort === "az" ? "asc" : "desc";
     
     return sort;
   }
