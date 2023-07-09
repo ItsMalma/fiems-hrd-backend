@@ -129,7 +129,7 @@ export class EmployeeController {
       return res.status(400).json(new Payload(null, errors.toError()));
     }
     
-    const employee = await this.employeeRepository.deleteById(employeeIdRequest.id)
+    const employee = await this.employeeRepository.deleteById(employeeIdRequest.id);
     if (!employee) {
       return res.status(404).json(new Payload(
         null,
