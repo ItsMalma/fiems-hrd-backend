@@ -1,4 +1,4 @@
-import { Collection, InferIdType } from "mongodb";
+import { Collection, InferIdType, Sort } from "mongodb";
 import { Employee } from "@/entities/employee.entity";
 
 export class EmployeeRepository {
@@ -16,8 +16,10 @@ export class EmployeeRepository {
     return employee;
   }
   
-  public async findAll(): Promise<Employee[]> {
-    return await this.employees.find({deletedAt: null}).toArray();
+  public async findAll(sort?: Sort): Promise<Employee[]> {
+    return await this.employees.find({deletedAt: null})
+      .sort(sort)
+      .toArray();
   }
   
   public async findById(id: InferIdType<Employee>): Promise<Employee> {
