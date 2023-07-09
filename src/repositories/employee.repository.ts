@@ -8,7 +8,7 @@ export class EmployeeRepository {
   
   }
   
-  public async save(employee: Employee): Promise<Employee> {
+  public async insert(employee: Employee): Promise<Employee> {
     employee._id = await this.employees.countDocuments() + 1;
     employee.deletedAt = null;
     
