@@ -26,6 +26,19 @@ export class EmployeeRepository {
     return await this.employees.findOne({_id: id, deletedAt: null});
   }
   
+  public async count(): Promise<number> {
+    return await this.employees.countDocuments();
+  }
+  
+  public async update(id: number, employee: Employee): Promise<Employee> {
+    delete employee._id;
+    await this.employees.updateOne(
+      {_id: id},
+      {$set: employee}
+    );
+    return employee;
+  }
+  
   public async deleteById(id: InferIdType<Employee>): Promise<Employee> {
     const result = await this.employees.findOneAndUpdate(
       {_id: id, deletedAt: null}, {$set: {deletedAt: new Date()}}
