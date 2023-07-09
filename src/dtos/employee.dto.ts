@@ -308,12 +308,12 @@ export class EmployeeResponse {
   id: number;
   detail: {
     name: string
-    joining: Date
-    end: Date
+    joining: string
+    end: string
     nik: string
     npwp: string
     placeOfBirth: string
-    dateOfBirth: Date
+    dateOfBirth: string
     gender: "Pria" | "Wanita"
     bloodType: "A" | "B" | "AB" | "O"
     religion: "Islam" | "Kristen" | "Hindu" | "Buddha" | "Kong Hu Chu" | "Lainnya"
