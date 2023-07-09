@@ -54,12 +54,6 @@ export class EmployeeController {
     ));
   }
   
-  private async getEmployeesTotal(req: Request, res: Response) {
-    const total = await this.employeeRepository.count();
-    
-    res.status(200).json(new Payload(total, null));
-  }
-  
   private async getEmployeeById(req: Request, res: Response) {
     const employeeIdRequest = plainToInstance<EmployeeIdRequest, unknown>(
       EmployeeIdRequest, req.params, {excludeExtraneousValues: true}
@@ -146,7 +140,6 @@ export class EmployeeController {
     const router = Router();
     router.post("", this.addEmployee.bind(this));
     router.get("", this.getAllEmployees.bind(this));
-    router.get("/total", this.getEmployeesTotal.bind(this));
     router.get("/:id", this.getEmployeeById.bind(this));
     router.put("/:id", this.editEmployeeById.bind(this));
     router.delete("/:id", this.deleteEmployeById.bind(this));
