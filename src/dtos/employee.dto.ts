@@ -1,4 +1,4 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type, Transform } from "class-transformer";
 import {
   IsArray,
   IsDefined, IsEmail,
@@ -6,7 +6,7 @@ import {
   IsNotEmpty,
   IsNumber, IsNumberString,
   IsObject, IsOptional, IsPhoneNumber, IsPostalCode,
-  IsString, ValidateIf,
+  IsString, Min, ValidateIf,
   ValidateNested
 } from "class-validator";
 import { IsDateFormat } from "@/libs/validator";
@@ -277,6 +277,33 @@ export class AddEmployeeRequest {
   leave: AddEmployeeRequestLeave;
 }
 
+export class GetAllEmployeesRequest {
+  @Expose()
+  @IsOptional()
+  @IsNotEmpty({message: "must be not empty"})
+  @IsString({message: "must be string"})
+  @IsIn(
+    ["az", "za"],
+    {message: arg => {
+        const values = arg.constraints[0];
+        return "must be " + values
+          .slice(0, -1)
+          .map(value => `'${value}'`)
+          .join(", ") + " or '" + values.at(-1) + "'";
+      }}
+  )
+  sort: "az" | "za";
+}
+
+export class EmployeeIdRequest {
+  @Expose()
+  @Transform(params => Number(params.value))
+  @IsDefined({message: "must be defined and not null"})
+  @IsNumber({}, {message: "must be number"})
+  @Min(1, {message: "must be greater than 1"})
+  id: number;
+}
+
 export class EmployeeResponse {
   id: number;
   detail: {
@@ -334,4 +361,9 @@ export class EmployeeResponse {
   leave: {
     totalLeaves: number
   };
+}
+
+export class EmployeeShortResponse {
+  id: number;
+  name: string;
 }
