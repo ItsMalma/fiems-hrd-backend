@@ -251,7 +251,7 @@ export class AddEmployeeRequestLeave {
   totalLeaves: number;
 }
 
-export class AddEmployeeRequest {
+export class SaveEmployeeRequest {
   @Expose()
   @Type(() => AddEmployeeRequestDetail)
   @IsDefined({message: "must be defined and not null"})
@@ -277,7 +277,7 @@ export class AddEmployeeRequest {
   leave: AddEmployeeRequestLeave;
 }
 
-export class GetAllEmployeesRequest {
+export class FilterEmployeesRequest {
   @Expose()
   @IsOptional()
   @IsNotEmpty({message: "must be not empty"})
