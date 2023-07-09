@@ -21,14 +21,22 @@ async function migration() {
   
   // migration for employee (create indexes)
   const employeesCollection = await mongoDatabase.collection("employees");
-  await employeesCollection.createIndexes([
-    {name: "unique_nik_employee", key: {"detail.nik": 1}, unique: true},
-    {name: "unique_npwp_employee", key: {"detail.npwp": 1}, unique: true, partialFilterExpression: {
-      detail: {npwp: {$ne: null}}
-    }},
-    {name: "unique_phoneNumber_employee", key: {"contactAndAddress.phoneNumber": 1}, unique: true},
-    {name: "unique_email_employee", key: {"contactAndAddress.email": 1}, unique: true},
-  ]);
+  await employeesCollection.createIndex(
+    {"detail.nik": 1},
+    {unique: true}
+  );
+  await employeesCollection.createIndex(
+    {"detail.npwp": 1},
+    {unique: true, partialFilterExpression: {"detail.npwp": {$type: "string"}}}
+  );
+  await employeesCollection.createIndex(
+    {"contactAndAddress.phoneNumber": 1},
+    {unique: true}
+  );
+  await employeesCollection.createIndex(
+    {"contactAndAddress.email": 1},
+    {unique: true}
+  );
 }
 
 migration()
