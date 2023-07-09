@@ -2,7 +2,11 @@ import "reflect-metadata";
 import cors from "cors";
 import config from "config";
 import express from "express";
+import "express-async-errors";
 import { MongoClient } from "mongodb";
+import { EmployeeRepository } from "@/repositories/employee.repository";
+import { EmployeeController } from "@/controllers/employee.controller";
+import { errorHandler, notFoundHandler } from "@/middlewares/error-handler.middleware";
 
 async function main() {
   // get config
@@ -31,11 +35,18 @@ async function main() {
   app.use(express.json());
   app.use(cors());
   
-  // controllers
+  // repositories
+  const employeeRepository = EmployeeRepository.getRepository(mongoDatabase.collection("employees"));
   
+  // controllers
+  const employeeController = new EmployeeController(employeeRepository);
   
   // controller's routing
+  app.use("/employees", employeeController.getRouter());
   
+  // error handler
+  app.use(notFoundHandler());
+  app.use(errorHandler());
   
   // run server
   app.listen(serverPort, "localhost", () => console.log(`Listening on :${serverPort}`));
