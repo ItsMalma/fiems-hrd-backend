@@ -2,6 +2,10 @@ import { Collection, InferIdType, MongoServerError, Sort } from "mongodb";
 import { Employee } from "@/entities/employee.entity";
 import { RepositoryError, RepositoryErrorType } from "@/errors/repository.error";
 
+export interface EmployeeSort {
+  name?: "asc" | "desc"
+}
+
 export class EmployeeRepository {
   constructor(
     private employees: Collection<Employee>
@@ -43,9 +47,13 @@ export class EmployeeRepository {
     }
   }
   
-  public async findAll(sort?: Sort): Promise<Employee[]> {
+  public async findAll(sort?: EmployeeSort): Promise<Employee[]> {
+    const mongoSort: Sort = {};
+    if (sort.name)
+      mongoSort["detail.name"] = sort.name === "asc" ? 1 : -1;
+    
     return await this.employees.find({deletedAt: null})
-      .sort(sort)
+      .sort(mongoSort)
       .toArray();
   }
   
