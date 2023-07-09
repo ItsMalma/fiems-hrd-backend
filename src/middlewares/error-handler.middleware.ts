@@ -1,5 +1,6 @@
 import { ErrorRequestHandler, RequestHandler } from "express";
 import { Payload } from "@/dtos/payload";
+import { RepositoryError, RepositoryErrorType } from "@/errors/repository.error";
 
 export function notFoundHandler(): RequestHandler {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -11,10 +12,18 @@ export function notFoundHandler(): RequestHandler {
 export function errorHandler(): ErrorRequestHandler {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return function (err, req, res, _next) {
-    switch (err) {
-    default:
+    if (err instanceof RepositoryError) {
+      let statusCode = 500;
+      
+      switch (err.type) {
+      case RepositoryErrorType.Duplicate:
+        statusCode = 409;
+        break;
+      }
+      
+      res.status(statusCode).json(new Payload(null, err.message));
+    } else {
       res.status(500).json(new Payload(null, "internal server error"));
-      break;
     }
   };
 }

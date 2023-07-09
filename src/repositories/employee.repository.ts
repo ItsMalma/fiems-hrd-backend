@@ -1,5 +1,6 @@
-import { Collection, InferIdType, Sort } from "mongodb";
+import { Collection, InferIdType, MongoServerError, Sort } from "mongodb";
 import { Employee } from "@/entities/employee.entity";
+import { RepositoryError, RepositoryErrorType } from "@/errors/repository.error";
 
 export class EmployeeRepository {
   constructor(
@@ -8,12 +9,38 @@ export class EmployeeRepository {
   
   }
   
+  private handleMongoError(err: MongoServerError) {
+    if (err.code === 11000) {
+      let message = "";
+      switch (Object.keys(err.keyPattern)[0]) {
+      case "detail.nik":
+        message = "employee with same nik is already exists";
+        break;
+      case "detail.npwp":
+        message = "employee with same npwp is already exists";
+        break;
+      case "contactAndAddress.phoneNumber":
+        message = "employee with same phone number is already exists";
+        break;
+      case "contactAndAddress.email":
+        message = "employee with same email is already exists";
+        break;
+      }
+      throw new RepositoryError(RepositoryErrorType.Duplicate, message);
+    }
+  }
+  
   public async insert(employee: Employee): Promise<Employee> {
     employee._id = await this.employees.countDocuments() + 1;
     employee.deletedAt = null;
     
-    await this.employees.insertOne(employee);
-    return employee;
+    try {
+      await this.employees.insertOne(employee);
+      return employee;
+    } catch (err) {
+      if (err instanceof MongoServerError)
+        this.handleMongoError(err);
+    }
   }
   
   public async findAll(sort?: Sort): Promise<Employee[]> {
