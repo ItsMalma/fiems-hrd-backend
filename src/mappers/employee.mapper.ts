@@ -1,15 +1,15 @@
 import {
-  AddEmployeeRequest,
+  SaveEmployeeRequest,
   EmployeeResponse,
   EmployeeShortResponse,
-  GetAllEmployeesRequest
+  FilterEmployeesRequest
 } from "@/dtos/employee.dto";
 import { Employee } from "@/entities/employee.entity";
 import { Sort } from "mongodb";
 import moment from "moment";
 
 export class EmployeeMapper {
-  transformAddRequestIntoEntity(dto: AddEmployeeRequest): Employee {
+  saveRequestToEntity(dto: SaveEmployeeRequest): Employee {
     dto.detail.joining = moment(dto.detail.joining, "DD/MM/YYYY", true).toDate();
     dto.detail.end = dto.detail.end && moment(dto.detail.end, "DD/MM/YYYY", true).toDate();
     dto.detail.dateOfBirth = moment(dto.detail.dateOfBirth, "DD/MM/YYYY", true).toDate();
@@ -24,7 +24,7 @@ export class EmployeeMapper {
     };
   }
   
-  transformGetAllRequestIntoSort(dto: GetAllEmployeesRequest): Sort {
+  filterRequestToSort(dto: FilterEmployeesRequest): Sort {
     const sort: Sort = {};
     
     switch (dto.sort) {
@@ -39,7 +39,7 @@ export class EmployeeMapper {
     return sort;
   }
   
-  transformEntityToResponse(entity: Employee): EmployeeResponse {
+  entityToResponse(entity: Employee): EmployeeResponse {
     return {
       id: entity._id,
       detail: entity.detail,
@@ -49,18 +49,18 @@ export class EmployeeMapper {
     };
   }
   
-  transformEntityToShortResponse(entity: Employee): EmployeeShortResponse {
+  entityToShortResponse(entity: Employee): EmployeeShortResponse {
     return {
       id: entity._id,
       name: entity.detail.name
     };
   }
   
-  transformEntitiesToResponses(entities: Employee[]): EmployeeResponse[] {
-    return entities.map(entity => this.transformEntityToResponse(entity));
+  entitiesToResponses(entities: Employee[]): EmployeeResponse[] {
+    return entities.map(entity => this.entityToResponse(entity));
   }
   
-  transformEntitiesToShortResponses(entities: Employee[]): EmployeeShortResponse[] {
-    return entities.map(entity => this.transformEntityToShortResponse(entity));
+  entitiesToShortResponses(entities: Employee[]): EmployeeShortResponse[] {
+    return entities.map(entity => this.entityToShortResponse(entity));
   }
 }
