@@ -42,7 +42,20 @@ export class EmployeeMapper {
   entityToResponse(entity: Employee): EmployeeResponse {
     return {
       id: entity._id,
-      detail: entity.detail,
+      detail: {
+        name: entity.detail.name,
+        joining: moment(entity.detail.joining).format("DD/MM/YYYY"),
+        end: entity.detail.end && moment(entity.detail.end).format("DD/MM/YYYY"),
+        nik: entity.detail.nik,
+        npwp: entity.detail.npwp,
+        placeOfBirth: entity.detail.placeOfBirth,
+        dateOfBirth: moment(entity.detail.dateOfBirth).format("DD/MM/YYYY"),
+        gender: entity.detail.gender,
+        bloodType: entity.detail.bloodType,
+        religion: entity.detail.religion,
+        latestEducation: entity.detail.latestEducation,
+        yearOfGraduation: entity.detail.yearOfGraduation,
+      },
       contactAndAddress: entity.contactAndAddress,
       family: entity.family,
       leave: entity.leave
