@@ -37,6 +37,13 @@ async function migration() {
     {"contactAndAddress.email": 1},
     {unique: true}
   );
+  
+  // migration for attendance (create indexes)
+  const attendancesCollection = await mongoDatabase.collection("attendances");
+  await attendancesCollection.createIndex(
+    {"employee.id": 1, "date": 1},
+    {unique: true}
+  );
 }
 
 migration()
