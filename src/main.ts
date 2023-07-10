@@ -7,6 +7,8 @@ import { MongoClient } from "mongodb";
 import { EmployeeRepository } from "@/repositories/employee.repository";
 import { EmployeeController } from "@/controllers/employee.controller";
 import { errorHandler, notFoundHandler } from "@/middlewares/error-handler.middleware";
+import { AttendanceController } from "@/controllers/attendance.controller";
+import { AttendanceRepository } from "@/repositories/attendance.repository";
 
 async function main() {
   // get config
@@ -37,12 +39,15 @@ async function main() {
   
   // repositories
   const employeeRepository = EmployeeRepository.getRepository(mongoDatabase.collection("employees"));
+  const attendanceRepository = AttendanceRepository.getRepository(mongoDatabase.collection("attendances"));
   
   // controllers
   const employeeController = new EmployeeController(employeeRepository);
+  const attendanceController = new AttendanceController(attendanceRepository, employeeRepository);
   
   // controller's routing
   app.use("/employees", employeeController.getRouter());
+  app.use("/attendances", attendanceController.getRouter());
   
   // error handler
   app.use(notFoundHandler());
