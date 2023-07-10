@@ -103,7 +103,7 @@ export class EmployeeController {
       ));
     }
     
-    const employee = await this.employeeRepository.update(
+    const employee = await this.employeeRepository.updateById(
       employeeIdRequest.id,
       this.employeeMapper.saveRequestToEntity(saveEmployeeRequest)
     );

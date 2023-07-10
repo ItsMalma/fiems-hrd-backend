@@ -65,13 +65,19 @@ export class EmployeeRepository {
     return await this.employees.countDocuments();
   }
   
-  public async update(id: number, employee: Employee): Promise<Employee> {
+  public async updateById(id: InferIdType<Employee>, employee: Employee): Promise<Employee> {
     delete employee._id;
-    await this.employees.updateOne(
-      {_id: id},
-      {$set: employee}
-    );
-    return employee;
+    
+    try {
+      await this.employees.updateOne(
+        {_id: id},
+        {$set: employee}
+      );
+      return employee;
+    } catch (err) {
+      if (err instanceof MongoServerError)
+        this.handleMongoError(err);
+    }
   }
   
   public async deleteById(id: InferIdType<Employee>): Promise<Employee> {
